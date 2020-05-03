@@ -1,0 +1,14 @@
+<button class=" btn-danger" style="float: right;" (click)="onNoClick()">X</button>
+
+
+
+<form [formGroup]="song" (ngSubmit)="onSubmit()" class="form-group form-group-sm form-group-lg" style="margin: 20px;">
+    <label for="name">name</label>
+    <input type="text" formControlName="name" class="form-control" placeholder="Enter Playlist name" required>
+
+    <label for="name">url</label>
+    <input type="text" formControlName="url" class="form-control" placeholder="Enter url for that song"
+        pattern="^\S*[.]\S*$">
+    <button class="btn btn-success" style="margin: 10px;" [disabled]="!song.valid">Submit</button>
+
+</form>

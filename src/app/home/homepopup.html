@@ -1,0 +1,17 @@
+<button class=" btn-danger" style="float: right;" (click)="onNoClick()">X</button>
+
+
+
+<form [formGroup]="playlist" (ngSubmit)="onSubmit()" class="form-group form-group-sm form-group-lg"
+    style="margin: 20px;">
+    <label for="name">name</label>
+    <input type="text" formControlName="name" class="form-control" placeholder="Enter Playlist name" required>
+
+    <label for="name">tags</label>
+    <input type="text" formControlName="tags" class="form-control" placeholder="Enter tags seprated by ,(comma)">
+    <label class="btn btn-default">
+        <input type="file" (change)="selectFile($event)" placeholder="select file">
+    </label>
+    <button class="btn btn-success" [disabled]="!playlist.valid">Submit</button>
+
+</form>
