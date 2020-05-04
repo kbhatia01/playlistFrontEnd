@@ -175,7 +175,6 @@ export class SongPopUpComponent extends PlaylistComponent {
       "name": this.song.controls.name.value,
       "url": this.song.controls.url.value,
     };
-    console.log("pl", this.playlist);
     if (this.playlist.songs) {
       this.playlist.songs.push(data);
       this.playlist.id = this.playlist._id;

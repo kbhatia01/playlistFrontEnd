@@ -23,7 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
 
   declarations: [
@@ -55,7 +55,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ToastrModule.forRoot(),
     ClipboardModule,
     Ng2SearchPipeModule,
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
   ],
   providers: [{
     provide: AuthServiceConfig,

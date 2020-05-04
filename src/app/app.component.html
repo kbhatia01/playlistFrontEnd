@@ -7,8 +7,8 @@
     <a class="nav-item nav-link" *ngIf="isLogin()" (click)="signOut()">Logout</a>
     <a class="nav-item nav-link" *ngIf="!isLogin()">Login</a>
   </div>
-  <img *ngIf="User && User.photoUrl " style="width: 30px;border-radius: 50% !important;;" class="rounded float-right"
-    src="{{User.photoUrl}}">
+  <img *ngIf="isLogin() && User && User.photoUrl " style="width: 30px;border-radius: 50% !important;;"
+    class="rounded float-right" src="{{User.photoUrl}}">
 
 </nav>
 

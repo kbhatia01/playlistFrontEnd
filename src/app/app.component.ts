@@ -23,15 +23,19 @@ export class AppComponent {
   async signOut() {
 
     await this.authService.signOut().catch(err => {
-      console.log(err)
+      console.log(err);
     });
     await localStorage.removeItem('user');
+    this.User = null;
 
-    this.router.navigateByUrl("/login")
+    this.router.navigateByUrl('/login');
 
   }
 
   isLogin() {
+    if (localStorage.getItem('user') && localStorage.getItem('user') != null && localStorage.getItem('user') != "null") {
+      this.User = JSON.parse(localStorage.getItem('user'));
+    }
     return localStorage.getItem('user') && localStorage.getItem('user') != null && localStorage.getItem('user') != "null";
   }
 }

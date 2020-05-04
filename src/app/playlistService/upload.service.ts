@@ -9,7 +9,7 @@ export class UploadService {
   constructor() { }
 
 
-  uploadFile(file) {
+  async uploadFile(file, name) {
     const contentType = file.type;
     const bucket = new S3(
       {
@@ -20,20 +20,19 @@ export class UploadService {
     );
     const params = {
       Bucket: 'playlisttest8295/playlistImages',
-      Key: file.name,
+      Key: name,
       Body: file,
       ACL: 'public-read',
       ContentType: contentType
     };
     // tslint:disable-next-line: only-arrow-functions
-    bucket.upload(params, function (err, data) {
+    await bucket.upload(params, async function (err, data) {
       if (err) {
         console.log('There was an error uploading your file: ', err);
         return false;
       }
       console.log('Successfully uploaded file.', data);
       return true;
-    });
-    return file.name;
+    }).promise();
   }
 }

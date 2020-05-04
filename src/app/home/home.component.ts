@@ -7,6 +7,8 @@ import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { GlobalVariable } from 'global';
 import { Router } from '@angular/router';
+import * as uuid from 'uuid';
+import { NgxSpinnerService } from 'ngx-spinner';
 export interface playlistData {
   animal: string;
   name: string;
@@ -49,7 +51,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-
+      this.ngOnInit();
     });
   }
   playlistSongs(playlist, id) {
@@ -64,12 +66,14 @@ export class HomeComponent implements OnInit {
 export class PlaylistComponentPopup extends HomeComponent {
   playlist: FormGroup
   selectedFiles: FileList;
+  public fileName;
+  public file;
 
   constructor(
 
     public dialogRef: MatDialogRef<PlaylistComponentPopup>, private fb: FormBuilder, private uploadService: UploadService,
     public dialog: MatDialog,
-    public routers: Router,
+    public routers: Router, private spinner: NgxSpinnerService,
     private playlistServices: PlaylistService, private toast: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: playlistData) {
     super(playlistServices, dialog, routers);
@@ -81,35 +85,50 @@ export class PlaylistComponentPopup extends HomeComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
-    window.location.reload();
 
   }
-  onSubmit() {
+  async onSubmit() {
+    this.spinner.show();
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+    }, 5000);
+    if (this.selectedFiles) {
 
+      const myId = uuid.v4();
+      this.file = this.selectedFiles.item(0);
+      const name = this.file.name.split('.');
+      console.log(this.file)
+      this.fileName = myId + '.' + name[name.length - 1];
+      await this.upload(this.fileName);
+    }
     let data = {
       "name": this.playlist.controls.name.value,
       "tags": this.playlist.controls.tags.value ? this.playlist.controls.tags.value.split(',') : [],
-      "image": this.upload(),
+      "image": this.fileName,
       "user_name": this.User_name
     }
     this.playlistServices.postPlaylist(data).subscribe(res => {
       console.log(res)
+      this.spinner.hide();
       if (res.status != 201) {
         this.toast.error('some Issue occur try after some time');
 
       }
       else {
         this.toast.success('created!!!');
+        this.onNoClick();
+
       }
+
     });
-    this.onNoClick();
+
   }
-  upload() {
-    if (this.selectedFiles) {
-      const file = this.selectedFiles.item(0);
-      return this.uploadService.uploadFile(file);
-    }
-    return null;
+  async upload(name) {
+    await this.uploadService.uploadFile(this.file, name).then(res => {
+      this.file = null;
+      return res;
+    });
   }
 
   selectFile(event) {
