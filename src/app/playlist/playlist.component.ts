@@ -97,7 +97,7 @@ export class PlaylistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-
+      this.ngOnInit();
     });
   }
   play(index) {
@@ -186,13 +186,12 @@ export class SongPopUpComponent extends PlaylistComponent {
         }
         else {
           this.toast.success('created!!!');
-          window.location.reload();
+          this.onNoClick();
 
         }
       });
     }
     console.log(data);
-    this.onNoClick();
   }
 
 }
